@@ -130,7 +130,7 @@ data1$업종코드 <- tolower(data1$업종코드)
 
 # 병합한 데이터를 data6 변수로 저장
 data6 <- inner_join(data1, data5, by='업종코드')
-View(data6)
+# View(data6)
 
 # NA값이 있는지 확인
 table(is.na(data6))
@@ -184,6 +184,19 @@ ggplot(code1_1, aes(소분류, fill=연령대별)) +
   theme(legend.position='bottom')
 # => 30대는 한식을 가장 많이 이용하고, 중식은 10대부터 70대 이상 모두 이용하는 것을 알 수 있다.
 
+#########
+library(reshape2)
+
+# 연령대별 요식/유흥 이용 분포
+
+age_food <- table(code1_1$소분류, code1_1$연령대별)
+
+heatmap(age_food,
+        Rowv = NA, Colv = NA, revC = TRUE, 
+        scale = 'none',
+        col=colorRampPalette(c('ivory','red'))(10)) # 10단계
+
+##########
 
 ### 카드 이용금액이 가장 많은 이용자 상위 5위 ###
 card_money <- data6 %>% arrange(desc(카드이용금액계)) %>% head()
